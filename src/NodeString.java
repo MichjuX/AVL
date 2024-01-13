@@ -13,4 +13,5 @@ public class NodeString {
         // Inicjalizacja referencji
         this.reference = null;
     }
+
 }

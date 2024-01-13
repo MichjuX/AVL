@@ -52,15 +52,13 @@ public class AVLString {
         return y;
     }
 
-    NodeString insert(NodeString root, String key, NodeString reference) {
+    NodeString insert(NodeString root, NodeString node) {
         if (root == null) {
-            NodeString newNode = new NodeString(key);
-            newNode.reference = reference;
-            return newNode;
-        } else if (key.compareTo(root.key) < 0) {
-            root.left = insert(root.left, key, reference);
-        } else if (key.compareTo(root.key) > 0) {
-            root.right = insert(root.right, key, reference);
+            return node;
+        } else if (node.key.compareTo(root.key) < 0) {
+            root.left = insert(root.left, node);
+        } else if (node.key.compareTo(root.key) > 0) {
+            root.right = insert(root.right, node);
         }
         return rebalance(root);
     }

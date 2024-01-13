@@ -7,17 +7,22 @@ public class Dictionary {
         this.avlPlate = new AVLString();
     }
     void insert(String pesel, String plate){
-        this.avlPesel.root = this.avlPesel.insert(this.avlPesel.root, pesel, );
-        this.avlPlate.root = this.avlPlate.insert(this.avlPlate.root, plate);
+        NodeString peselNode = new NodeString(pesel);
+        NodeString plateNode = new NodeString(plate);
+        peselNode.reference = plateNode;
+        plateNode.reference = peselNode;
+        this.avlPesel.root = this.avlPesel.insert(this.avlPesel.root, peselNode);
+        this.avlPlate.root = this.avlPlate.insert(this.avlPlate.root, plateNode);
 
 
     }
-    void insertPesel(String key){
-        this.avlPesel.root = avlPesel.insert(this.avlPesel.root, key);
-    }
-    void insertPlate(String key){
-        this.avlPlate.root = this.avlPlate.insert(avlPlate.root, key);
-    }
+//    void insertPesel(String key){
+//        NodeString peselNode = new NodeString(pesel);
+//        this.avlPesel.root = avlPesel.insert(this.avlPesel.root, key);
+//    }
+//    void insertPlate(String key){
+//        this.avlPlate.root = this.avlPlate.insert(avlPlate.root, key);
+//    }
     void printPesel(){
         this.avlPesel.PrintKLP(this.avlPesel.root);
 
