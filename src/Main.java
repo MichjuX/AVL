@@ -153,11 +153,13 @@ public class Main {
             try {
                 Scanner file = new Scanner(new File("InTestB.txt"));
                 while (file.hasNext()) {
-                    int key = file.nextInt();
-                    dictionary.insertPesel(key);
-                    key = file.nextInt();
-                    dictionary.insertPlate(key);
+                    String keyPesel = file.next();
+                    dictionary.insertPesel(keyPesel);
+
+                    String keyPlate = file.next();
+                    dictionary.insertPlate(keyPlate);
                 }
+
                 System.out.println(ANSI_GREEN + "Inserted values from file InTest1.txt" + ANSI_RESET);
             } catch (FileNotFoundException e) {
                 System.out.println(ANSI_RED + "File InTest1.txt not found." + ANSI_RESET);
