@@ -4,6 +4,7 @@ public class AVL {
     Node root;
 
     void updateHeight(Node node) {
+        // Wysokość węzła to maksimum wysokości lewego i prawego poddrzewa + 1 (wzór z wykładu)
         node.height = Math.max(height(node.left), height(node.right)) + 1;
     }
 
@@ -12,68 +13,73 @@ public class AVL {
     }
 
     int getBalance(Node node) {
+        // Wysokość lewego poddrzewa minus wysokość prawego poddrzewa (wzór z wykładu)
         return (node == null) ? 0 : height(node.left) - height(node.right);
     }
-    Node rebalance(Node z) {
-        updateHeight(z);
-        int balance = getBalance(z);
+    Node rebalance(Node node) {
+        // Aktualizuj wysokość węzła
+        updateHeight(node);
+        // Oblicz balans węzła
+        int balance = getBalance(node);
+
+        // Jeżeli balans jest większy niż 1, znaczy to, że lewe poddrzewo jest zbyt wysokie
         if (balance > 1) {
-            if (getBalance(z.left) < 0) {
-                z.left = rotateLeft(z.left);
+            // Jeżeli balans lewego poddrzewa jest mniejszy niż 0, wykonaj rotację w lewo
+            if (getBalance(node.left) < 0) {
+                node.left = rotateLeft(node.left);
             }
-            return rotateRight(z);
-        } else if (balance < -1) {
-            if (getBalance(z.right) > 0) {
-                z.right = rotateRight(z.right);
+            // Wykonaj rotację w prawo dla węzła
+            return rotateRight(node);
+        }
+        // Jeżeli balans jest mniejszy niż -1, znaczy to, że prawe poddrzewo jest zbyt wysokie
+        else if (balance < -1) {
+            // Jeżeli balans prawego poddrzewa jest większy niż 0, wykonaj rotację w prawo
+            if (getBalance(node.right) > 0) {
+                node.right = rotateRight(node.right);
             }
-            return rotateLeft(z);
-            }
-        return z;
+            // Wykonaj rotację w lewo dla węzła
+            return rotateLeft(node);
+        }
+
+        // Jeśli jest balans
+        return node;
     }
-//    Node rebalance(Node z) {
-//        updateHeight(z);
-//        int balance = getBalance(z);
-//        if (balance < -1) {
-//            if (height(z.right.right) > height(z.right.left)) {
-//                z = rotateLeft(z);
-//            } else {
-//                z.right = rotateRight(z.right);
-//                z = rotateLeft(z);
-//            }
-//        } else if (balance > 1) {
-//            if (height(z.left.left) > height(z.left.right))
-//                z = rotateRight(z);
-//            else {
-//                z.left = rotateLeft(z.left);
-//                z = rotateRight(z);
-//            }
-//        }
-//        return z;
-//    }
+
     Node rotateRight(Node y) {
+        // Przypisz zmienne pomocnicze
         Node x = y.left;
-        Node T2 = x.right;
+        Node z = x.right;
+        // Wykonaj rotację w prawo
         x.right = y;
-        y.left = T2;
+        y.left = z;
+        // Aktualizuj wysokości węzłów
         updateHeight(y);
         updateHeight(x);
         return x;
     }
     Node rotateLeft(Node x) {
+        // Przypisz zmienne pomocnicze
         Node y = x.right;
-        Node T2 = y.left;
+        Node z = y.left;
+        // Wykonaj rotację w lewo
         y.left = x;
-        x.right = T2;
+        x.right = z;
+        // Aktualizuj wysokości węzłów
         updateHeight(x);
         updateHeight(y);
         return y;
     }
     Node insert(Node root, int key) {
+        // Jeżeli węzeł jest pusty, zwróć nowy węzeł
         if (root == null) {
             return new Node(key);
-        } else if (root.key > key) {
+        }
+        // Jeżeli klucz do wstawienia jest mniejszy niż klucz w bieżącym węźle, idź w lewo
+        else if (root.key > key) {
             root.left = insert(root.left, key);
-        } else if (root.key < key) {
+        }
+        // Jeżeli klucz do wstawienia jest większy niż klucz w bieżącym węźle, idź w prawo
+        else if (root.key < key) {
             root.right = insert(root.right, key);
         }
         return rebalance(root);
@@ -81,65 +87,49 @@ public class AVL {
     public void delete(int key) {
         root = deleteRecursive(root, key);
     }
-//    Node deleteRecursive(Node node, int key) {
-//        if (node == null) {
-//            return node;
-//        }
-//        else if (node.key > key) {
-//            node.left = deleteRecursive(node.left, key);
-//        }
-//        else if (node.key < key) {
-//            node.right = deleteRecursive(node.right, key);
-//        }
-//        else {
-//            if (node.left == null && node.right == null) {
-//                return null;
-//            } else if(node.left == null) {
-//                node = node.right;
-//            } else if(node.right == null) {
-//                node = node.left;
-//            } else {
-//                Node mostLeftChild = mostLeftChild(node.left);
-//                node.key = mostLeftChild.key;
-//                node.left = deleteRecursive(node.left, node.key);
-//            }
-//        }
-//        return rebalance(node);
-//    }
     Node deleteRecursive(Node node, int key) {
+        // Jeżeli węzeł jest pusty nie usuwaj niczego
         if (node == null) {
             return node;
         }
+        // Jeżeli klucz do usunięcia jest mniejszy niż klucz w bieżącym węźle, idź w lewo
         else if (node.key > key) {
             node.left = deleteRecursive(node.left, key);
         }
+        // Jeżeli klucz do usunięcia jest większy niż klucz w bieżącym węźle, idź w prawo
         else if (node.key < key) {
             node.right = deleteRecursive(node.right, key);
         }
+        // Jeżeli klucz do usunięcia jest równy kluczowi w bieżącym węźle
         else {
+            // Jeżeli jeden z potomków jest pusty, zastąp bieżący węzeł niepustym potomkiem
             if (node.left == null || node.right == null) {
                 node = (node.left == null) ? node.right : node.left;
             }
+            // Jeżeli węzeł ma 2 potomków, znajdź najbardziej prawy element lewego poddrzewa
             else {
                 Node mostLeftChild = mostLeftChild(node.left);
+                // Zastąp klucz bieżącego węzła najbardziej "lewym" kluczem
                 node.key = mostLeftChild.key;
+                // Usuń najbardziej  prawy element lewego poddrzewa
                 node.left = deleteRecursive(node.left, node.key);
             }
         }
+        // rebalance
         if (node != null) {
             node = rebalance(node);
         }
+        // Zwróć zmodyfikowany węzeł
         return node;
     }
     private Node mostLeftChild(Node node) {
         Node current = node;
-        /* loop down to find the leftmost leaf */
+        // Przechodź w prawo aż do końca
         while (current.right != null) {
             current = current.right;
         }
         return current;
     }
-    // avl print in order KLP which means Root Left Right
     void PrintKLP(Node node) {
         if (node != null) {
             System.out.print(Main.ANSI_GREEN+node.key+" "+Main.ANSI_RESET);
@@ -157,7 +147,6 @@ public class AVL {
 
     void getWeightHeight(Node node, int key, int height) {
         if (node == null || node.key == key) {
-//            return node == null ? "Not found" : "Weight: " + getBalance(node) + ", Height: " + height;
             if(node==null){
                 System.out.println(Main.ANSI_RED + "Not found"  + Main.ANSI_RESET);
             }

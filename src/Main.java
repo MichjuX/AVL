@@ -39,7 +39,7 @@ public class Main {
             AVL avl = new AVL();
             // insert from file InTest1.txt
             if (DATA == 0) {
-                System.out.println(ANSI_CYAN + "READING VALUES FROM FILE..." + ANSI_RESET);
+                System.out.println(ANSI_CYAN + "WCZYTYWANIE DANYCH Z PLIKU..." + ANSI_RESET);
                 try {
                     Scanner file = new Scanner(new File("InTest1.txt"));
                     while (file.hasNext()) {
@@ -47,9 +47,9 @@ public class Main {
 
                         avl.root = avl.insert(avl.root, key);
                     }
-                    System.out.println(ANSI_GREEN + "Inserted values from file InTest1.txt" + ANSI_RESET);
+                    System.out.println(ANSI_GREEN + "Pomyślnie wczytano dane z pliku InTest1.txt." + ANSI_RESET);
                 } catch (FileNotFoundException e) {
-                    System.out.println(ANSI_RED + "File InTest1.txt not found." + ANSI_RESET);
+                    System.out.println(ANSI_RED + "Nie znaleziono pliku InTest1.txt." + ANSI_RESET);
                     return;
                 }
 //                Scanner file = new Scanner(new File("InTest1.txt"));
@@ -63,11 +63,11 @@ public class Main {
             // insert from random numbers
             else {
                 try {
-                    System.out.println(ANSI_YELLOW + "GENERATING RANDOM VALUES" + ANSI_RESET);
+                    System.out.println(ANSI_YELLOW + "GENEROWANIE LOSOWYCH DANYCH..." + ANSI_RESET);
                     AVLGenerator.generate(MIN, MAX, N, avl);
-                    System.out.println(ANSI_GREEN + "Generated random values." + ANSI_RESET);
+                    System.out.println(ANSI_GREEN + "Pomyślnie wygenerowano losowe dane." + ANSI_RESET);
                 } catch (FileNotFoundException e) {
-                    System.out.println(ANSI_RED + "File OutTest2.txt couldn't be created." + ANSI_RESET);
+                    System.out.println(ANSI_RED + "Plik OutTest2.txt nie mógł zostać ztworzony." + ANSI_RESET);
                     return;
                 }
 
@@ -146,9 +146,7 @@ public class Main {
         /////////////////////////////////////////////////
         // DICTIONARY
         else if (PROGRAM.equals("B") || PROGRAM.equals("b")) {
-            // implement DICTIONARY of plates numbers and pesel numbers
             Dictionary dictionary = new Dictionary();
-
 
             // menu
             int sw = 0;
@@ -168,7 +166,7 @@ public class Main {
                 switch (sc.nextLine()) {
                     case "1":
                         // Plik -> Wczytaj
-                        System.out.println(ANSI_CYAN + "READING VALUES FROM FILE..." + ANSI_RESET);
+                        System.out.println(ANSI_CYAN + "WCZYTYWANIE DANYCH Z PLIKU..." + ANSI_RESET);
                         try {
                             Scanner file = new Scanner(new File("InTestB.txt"));
                             while (file.hasNext()) {
@@ -177,9 +175,9 @@ public class Main {
                                 dictionary.insert(keyPesel, keyPlate);
                             }
 
-                            System.out.println(ANSI_GREEN + "Inserted values from file InTest1.txt" + ANSI_RESET);
+                            System.out.println(ANSI_GREEN + "Pomyślnie wczytano dane z pliku InTestB.txt" + ANSI_RESET);
                         } catch (FileNotFoundException e) {
-                            System.out.println(ANSI_RED + "File InTest1.txt not found." + ANSI_RESET);
+                            System.out.println(ANSI_RED + "Nie znaleziono pliku InTestB.txt." + ANSI_RESET);
                             return;
                         }
                         break;
@@ -189,6 +187,7 @@ public class Main {
                             PrintWriter save = new PrintWriter("OutTestB.txt");
                             dictionary.avlPesel.SaveKLP(dictionary.avlPesel.root, save);
                             save.close();
+                            dictionary.printPlate();
                             System.out.println(ANSI_GREEN + "Pomyślnie zapisano do pliku OutTestB.txt" + ANSI_RESET);
                         } catch (FileNotFoundException e) {
                             System.out.println(ANSI_RED + "Nie znaleziono pliku OutTestB.txt." + ANSI_RESET);
@@ -196,7 +195,7 @@ public class Main {
                         break;
                     case "3":
                         // Wstaw -> numer_pesel
-                        System.out.print(ANSI_YELLOW + "Podaj numer pesel: " + ANSI_RESET);
+                        System.out.print(ANSI_YELLOW + "Podaj numer PESEL: " + ANSI_RESET);
                         String keyPesel = sc2.next();
                         System.out.print(ANSI_YELLOW + "Podaj numer samochodu: " + ANSI_RESET);
                         String keyPlate = sc2.next();
@@ -207,12 +206,36 @@ public class Main {
                         // Wstaw -> numer_samochodu
                         System.out.print(ANSI_YELLOW + "Podaj numer samochodu: " + ANSI_RESET);
                         String keyPlate1 = sc2.next();
-                        System.out.print(ANSI_YELLOW + "Podaj numer pesel: " + ANSI_RESET);
+                        System.out.print(ANSI_YELLOW + "Podaj numer PESEL: " + ANSI_RESET);
                         String keyPesel1 = sc2.next();
                         dictionary.insert(keyPesel1, keyPlate1);
                         System.out.println(ANSI_GREEN + "Dodano element (jeśli wcześniej nie istniał)." + ANSI_RESET);
                         break;
-
+                    case "5":
+                        // Wyszukaj -> numer_pesel
+                        System.out.print(ANSI_YELLOW + "Podaj numer PESEL: " + ANSI_RESET);
+                        dictionary.avlPesel.search(sc2.next());
+                        break;
+                    case "6":
+                        // Wyszukaj -> numer_pesel
+                        System.out.print(ANSI_YELLOW + "Podaj numer samochodu: " + ANSI_RESET);
+                        dictionary.avlPlate.search(sc2.next());
+                        break;
+                    case "7":
+                        // Usuń -> numer_pesel
+                        System.out.print(ANSI_YELLOW + "Podaj numer PESEL: " + ANSI_RESET);
+                        dictionary.avlPesel.delete(sc2.next(), dictionary.avlPlate);
+                        System.out.println(ANSI_GREEN + "Usunięto element (jeśli taki istniał)." + ANSI_RESET);
+                        break;
+                    case "8":
+                        // Usuń -> numer_samochodu
+                        System.out.print(ANSI_YELLOW + "Podaj numer samochodu: " + ANSI_RESET);
+                        dictionary.avlPlate.delete(sc2.next(), dictionary.avlPesel);
+                        System.out.println(ANSI_GREEN + "Usunięto element (jeśli taki istniał)." + ANSI_RESET);
+                        break;
+                    case "9":
+                        sw = 1;
+                        break;
 
                 }
             }
