@@ -4,9 +4,6 @@ public class Node {
     Node left;
     Node right;
 
-    // For dictionary
-    int plate;
-    int pesel;
 
     public Node(int key) {
         this.key=key;

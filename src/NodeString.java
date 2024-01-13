@@ -4,12 +4,13 @@ public class NodeString {
     NodeString left;
     NodeString right;
 
-    // For dictionary
-    int plate;
-    int pesel;
+    // Referencje do innych obiektów NodeString
+    NodeString reference;
 
     public NodeString(String key) {
-        this.key= String.valueOf(key);
-    }
+        this.key = key;
 
+        // Inicjalizacja referencji
+        this.reference = null;
+    }
 }

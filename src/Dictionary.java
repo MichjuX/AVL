@@ -7,8 +7,10 @@ public class Dictionary {
         this.avlPlate = new AVLString();
     }
     void insert(String pesel, String plate){
-        this.avlPesel.root = this.avlPesel.insert(this.avlPesel.root, pesel);
+        this.avlPesel.root = this.avlPesel.insert(this.avlPesel.root, pesel, );
         this.avlPlate.root = this.avlPlate.insert(this.avlPlate.root, plate);
+
+
     }
     void insertPesel(String key){
         this.avlPesel.root = avlPesel.insert(this.avlPesel.root, key);
@@ -18,7 +20,7 @@ public class Dictionary {
     }
     void printPesel(){
         this.avlPesel.PrintKLP(this.avlPesel.root);
-        
+
     }
     void printPlate(){
         this.avlPlate.PrintKLP(this.avlPlate.root);
