@@ -119,7 +119,7 @@ public class AVLString {
 
     void SaveKLP(NodeString node, PrintWriter save) {
         if (node != null) {
-            save.print(node.key + "(" + getBalance(node) + ") ");
+            save.println(node.key + " " + node.reference.key);
             SaveKLP(node.left, save);
             SaveKLP(node.right, save);
         }

@@ -148,28 +148,75 @@ public class Main {
         else if (PROGRAM.equals("B") || PROGRAM.equals("b")) {
             // implement DICTIONARY of plates numbers and pesel numbers
             Dictionary dictionary = new Dictionary();
-            
-            System.out.println(ANSI_CYAN + "READING VALUES FROM FILE..." + ANSI_RESET);
-            try {
-                Scanner file = new Scanner(new File("InTestB.txt"));
-                while (file.hasNext()) {
-                    String keyPesel = file.next();
-                    String keyPlate = file.next();
-                    dictionary.insert(keyPesel, keyPlate);
+
+
+            // menu
+            int sw = 0;
+            Scanner sc = new Scanner(System.in);
+
+            while (sw == 0) {
+                Scanner sc2 = new Scanner(System.in);
+                System.out.println("1. Plik -> Wczytaj");
+                System.out.println("2. Plik -> Zapisz");
+                System.out.println("3. Wstaw -> numer_pesel");
+                System.out.println("4. Wstaw -> numer_samochodu");
+                System.out.println("5. Wyszukaj -> numer_pesel");
+                System.out.println("6. Wyszukaj -> numer_samochodu");
+                System.out.println("7. Usuń -> numer_pesel");
+                System.out.println("8. Usuń -> numer_samochodu");
+                System.out.println("9. Zakończ działanie programu.");
+                switch (sc.nextLine()) {
+                    case "1":
+                        // Plik -> Wczytaj
+                        System.out.println(ANSI_CYAN + "READING VALUES FROM FILE..." + ANSI_RESET);
+                        try {
+                            Scanner file = new Scanner(new File("InTestB.txt"));
+                            while (file.hasNext()) {
+                                String keyPesel = file.next();
+                                String keyPlate = file.next();
+                                dictionary.insert(keyPesel, keyPlate);
+                            }
+
+                            System.out.println(ANSI_GREEN + "Inserted values from file InTest1.txt" + ANSI_RESET);
+                        } catch (FileNotFoundException e) {
+                            System.out.println(ANSI_RED + "File InTest1.txt not found." + ANSI_RESET);
+                            return;
+                        }
+                        break;
+                    case "2":
+                        // Plik -> Zapisz
+                        try {
+                            PrintWriter save = new PrintWriter("OutTestB.txt");
+                            dictionary.avlPesel.SaveKLP(dictionary.avlPesel.root, save);
+                            save.close();
+                            System.out.println(ANSI_GREEN + "Pomyślnie zapisano do pliku OutTestB.txt" + ANSI_RESET);
+                        } catch (FileNotFoundException e) {
+                            System.out.println(ANSI_RED + "Nie znaleziono pliku OutTestB.txt." + ANSI_RESET);
+                        }
+                        break;
+                    case "3":
+                        // Wstaw -> numer_pesel
+                        System.out.print(ANSI_YELLOW + "Podaj numer pesel: " + ANSI_RESET);
+                        String keyPesel = sc2.next();
+                        System.out.print(ANSI_YELLOW + "Podaj numer samochodu: " + ANSI_RESET);
+                        String keyPlate = sc2.next();
+                        dictionary.insert(keyPesel, keyPlate);
+                        System.out.println(ANSI_GREEN + "Dodano element (jeśli wcześniej nie istniał)." + ANSI_RESET);
+                        break;
+                    case "4":
+                        // Wstaw -> numer_samochodu
+                        System.out.print(ANSI_YELLOW + "Podaj numer samochodu: " + ANSI_RESET);
+                        String keyPlate1 = sc2.next();
+                        System.out.print(ANSI_YELLOW + "Podaj numer pesel: " + ANSI_RESET);
+                        String keyPesel1 = sc2.next();
+                        dictionary.insert(keyPesel1, keyPlate1);
+                        System.out.println(ANSI_GREEN + "Dodano element (jeśli wcześniej nie istniał)." + ANSI_RESET);
+                        break;
+
+
                 }
-
-                System.out.println(ANSI_GREEN + "Inserted values from file InTest1.txt" + ANSI_RESET);
-            } catch (FileNotFoundException e) {
-                System.out.println(ANSI_RED + "File InTest1.txt not found." + ANSI_RESET);
-                return;
             }
-
-            dictionary.printPesel();
-            System.out.println();
-//            dictionary.printPlate();
-
-            }
-
+        }
     }
 
 }
