@@ -154,10 +154,8 @@ public class Main {
                 Scanner file = new Scanner(new File("InTestB.txt"));
                 while (file.hasNext()) {
                     String keyPesel = file.next();
-                    dictionary.insertPesel(keyPesel);
-
                     String keyPlate = file.next();
-                    dictionary.insertPlate(keyPlate);
+                    dictionary.insert(keyPesel, keyPlate);
                 }
 
                 System.out.println(ANSI_GREEN + "Inserted values from file InTest1.txt" + ANSI_RESET);
@@ -168,7 +166,7 @@ public class Main {
 
             dictionary.printPesel();
             System.out.println();
-            dictionary.printPlate();
+//            dictionary.printPlate();
 
             }
 

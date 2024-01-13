@@ -99,11 +99,23 @@ public class AVLString {
 
     void PrintKLP(NodeString node) {
         if (node != null) {
-            System.out.print(Main.ANSI_GREEN + node.key + " " + Main.ANSI_RESET);
+            String fullKey = node.key;
+            String highlightedPart = fullKey.substring(fullKey.length() - 3); // Ostatnie 3 znaki
+
+            String fullReferenceKey = node.reference.key;
+            String highlightedReferencePart = fullReferenceKey.substring(fullReferenceKey.length() - 3); // Ostatnie 3 znaki
+
+            System.out.println(fullKey.substring(0, fullKey.length() - 3) +
+                    Main.ANSI_YELLOW + highlightedPart + " " +
+                    Main.ANSI_RESET + fullReferenceKey.substring(0, fullReferenceKey.length() - 3) +
+                    Main.ANSI_YELLOW + highlightedReferencePart + Main.ANSI_RESET);
+
             PrintKLP(node.left);
             PrintKLP(node.right);
         }
     }
+
+
 
     void SaveKLP(NodeString node, PrintWriter save) {
         if (node != null) {
