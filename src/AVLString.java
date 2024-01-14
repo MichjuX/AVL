@@ -104,6 +104,7 @@ public class AVLString {
         }
         // Jeżeli klucz do usunięcia jest równy kluczowi w bieżącym węźle
         else {
+            // Usuń z drugiego drzewa
             if(node.reference != null){
                 avl.delete(node.reference.key, avl);
             }
@@ -155,11 +156,18 @@ public class AVLString {
         }
     }
 
-    void SaveKLP(NodeString node, PrintWriter save) {
+    void savePlate(NodeString node, PrintWriter save) {
+        if (node != null) {
+            save.println(node.reference.key + " " + node.key);
+            savePlate(node.left, save);
+            savePlate(node.right, save);
+        }
+    }
+    void savePesel(NodeString node, PrintWriter save) {
         if (node != null) {
             save.println(node.key + " " + node.reference.key);
-            SaveKLP(node.left, save);
-            SaveKLP(node.right, save);
+            savePesel(node.left, save);
+            savePesel(node.right, save);
         }
     }
     void search(String key){

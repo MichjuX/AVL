@@ -189,16 +189,16 @@ public class Main {
                             System.out.println("2. Kolejność względem numeru samochodu");
                             switch(sc3.nextLine()){
                                 case "1":
-                                    // Zapisz elementy drzewa AVL (wraz z wagami umieszczonymi w nawiasach) do pliku OutTestB.txt w kolejności KLP
+                                    // Zapisz elementy drzewa AVL do pliku OutTestB.txt w kolejności KLP
                                     PrintWriter save = new PrintWriter("OutTestB.txt");
-                                    dictionary.avlPesel.SaveKLP(dictionary.avlPesel.root, save);
+                                    dictionary.avlPesel.savePesel(dictionary.avlPesel.root, save);
                                     save.close();
                                     System.out.println(ANSI_GREEN + "Pomyślnie zapisano do pliku OutTestB.txt" + ANSI_RESET);
                                     break;
                                 case "2":
-                                    // Zapisz elementy drzewa AVL (wraz z wagami umieszczonymi w nawiasach) do pliku OutTestB.txt w kolejności KLP
+                                    // Zapisz elementy drzewa AVL do pliku OutTestB.txt w kolejności KLP
                                     PrintWriter save2 = new PrintWriter("OutTestB.txt");
-                                    dictionary.avlPlate.SaveKLP(dictionary.avlPlate.root, save2);
+                                    dictionary.avlPlate.savePlate(dictionary.avlPlate.root, save2);
                                     save2.close();
                                     System.out.println(ANSI_GREEN + "Pomyślnie zapisano do pliku OutTestB.txt" + ANSI_RESET);
                                     break;
