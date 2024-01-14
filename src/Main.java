@@ -184,11 +184,25 @@ public class Main {
                     case "2":
                         // Plik -> Zapisz
                         try {
-                            PrintWriter save = new PrintWriter("OutTestB.txt");
-                            dictionary.avlPesel.SaveKLP(dictionary.avlPesel.root, save);
-                            save.close();
-                            dictionary.printPlate();
-                            System.out.println(ANSI_GREEN + "Pomyślnie zapisano do pliku OutTestB.txt" + ANSI_RESET);
+                            Scanner sc3 = new Scanner(System.in);
+                            System.out.println("1. Kolejność względem numeru PESEL");
+                            System.out.println("2. Kolejność względem numeru samochodu");
+                            switch(sc3.nextLine()){
+                                case "1":
+                                    // Zapisz elementy drzewa AVL (wraz z wagami umieszczonymi w nawiasach) do pliku OutTestB.txt w kolejności KLP
+                                    PrintWriter save = new PrintWriter("OutTestB.txt");
+                                    dictionary.avlPesel.SaveKLP(dictionary.avlPesel.root, save);
+                                    save.close();
+                                    System.out.println(ANSI_GREEN + "Pomyślnie zapisano do pliku OutTestB.txt" + ANSI_RESET);
+                                    break;
+                                case "2":
+                                    // Zapisz elementy drzewa AVL (wraz z wagami umieszczonymi w nawiasach) do pliku OutTestB.txt w kolejności KLP
+                                    PrintWriter save2 = new PrintWriter("OutTestB.txt");
+                                    dictionary.avlPlate.SaveKLP(dictionary.avlPlate.root, save2);
+                                    save2.close();
+                                    System.out.println(ANSI_GREEN + "Pomyślnie zapisano do pliku OutTestB.txt" + ANSI_RESET);
+                                    break;
+                            }
                         } catch (FileNotFoundException e) {
                             System.out.println(ANSI_RED + "Nie znaleziono pliku OutTestB.txt." + ANSI_RESET);
                         }

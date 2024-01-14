@@ -9,8 +9,10 @@ public class Dictionary {
     void insert(String pesel, String plate){
         NodeString peselNode = new NodeString(pesel);
         NodeString plateNode = new NodeString(plate);
+        // Przypisanie referencji
         peselNode.reference = plateNode;
         plateNode.reference = peselNode;
+        // Wstawienie do drzewa
         this.avlPesel.root = this.avlPesel.insert(this.avlPesel.root, peselNode);
         this.avlPlate.root = this.avlPlate.insert(this.avlPlate.root, plateNode);
 
