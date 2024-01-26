@@ -10,7 +10,7 @@ public class Main {
     public static final int DATA = 0; // Applies only to AVL
     // 0 - read from file
     // 1 - generate random numbers
-    public static final String PROGRAM = "b";
+    public static final String PROGRAM = "a";
     // A - AVL
     // B - DICTIONARY
 
