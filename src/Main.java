@@ -10,7 +10,7 @@ public class Main {
     public static final int DATA = 0; // Applies only to AVL
     // 0 - read from file
     // 1 - generate random numbers
-    public static final String PROGRAM = "a";
+    public static final String PROGRAM = "b";
     // A - AVL
     // B - DICTIONARY
 
@@ -192,6 +192,7 @@ public class Main {
                                     // Zapisz elementy drzewa AVL do pliku OutTestB.txt w kolejności KLP
                                     PrintWriter save = new PrintWriter("OutTestB.txt");
                                     dictionary.avlPesel.savePesel(dictionary.avlPesel.root, save);
+                                    dictionary.avlPesel.printKLP(dictionary.avlPesel.root);
                                     save.close();
                                     System.out.println(ANSI_GREEN + "Pomyślnie zapisano do pliku OutTestB.txt" + ANSI_RESET);
                                     break;

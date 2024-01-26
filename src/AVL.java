@@ -59,10 +59,10 @@ public class AVL {
     private Node rebalance(Node node) {
         // Aktualizuj wysokość węzła
         updateNodeHeight(node);
-        // Oblicz balans węzła
+        // Oblicz wage węzła
         int weight = calculateWeight(node);
 
-        // Jeżeli balans jest większy niż 1, znaczy to, że lewe poddrzewo jest zbyt wysokie
+        // Jeżeli waga jest większa niż 1, znaczy to, że lewe poddrzewo jest zbyt wysokie
         if (weight > 1) {
             // Jeżeli waga jest innego znaku, wykonaj rotację w lewo (będzie podwójna LR)
             if (calculateWeight(node.left) < 0) {
@@ -71,7 +71,7 @@ public class AVL {
             // Wykonaj rotację w prawo
             return RR(node);
         }
-        // Jeżeli balans jest mniejszy niż -1, znaczy to, że prawe poddrzewo jest zbyt wysokie
+        // Jeżeli waga jest mniejsza niż -1, znaczy to, że prawe poddrzewo jest zbyt wysokie
         if (weight < -1) {
             // Jeżeli waga jest innego znaku, wykonaj rotację w prawo (będzie podwójna RL)
             if (calculateWeight(node.right) > 0) {
@@ -81,7 +81,7 @@ public class AVL {
             return LL(node);
         }
 
-        // Jeśli jest balans
+        // Jeśli waga jest ok
         return node;
     }
 
@@ -100,10 +100,10 @@ public class AVL {
     }
 
     private int getNodeHeight(Node node) { // Funkcja, która zapobiega błędom związanym odwołaniem do wysokości pustego węzła
-        if (node == null) {
-            return -1;
+        if (node != null) {
+            return node.height;
         }
-        return node.height;
+        return -1;
     }
 
     private Node LL(Node A) {
@@ -129,6 +129,7 @@ public class AVL {
     }
 
     private Node deleteRecursive(Node node, int key) {
+        // Szukamy elementu do usunięcia:
         // Jeżeli klucz do usunięcia jest mniejszy niż klucz w bieżącym węźle, idź w lewo
         if (key < node.key) {
             node.left = deleteRecursive(node.left, key);
@@ -140,8 +141,8 @@ public class AVL {
         // Jeżeli klucz do usunięcia jest równy kluczowi w bieżącym węźle
         if (key == node.key) {
             if (node.right != null && node.left != null) { // Jeśli ma 2 potomków znajdź następnika
-                // Zastąp klucz następnikiem
-                node.key = ancestor(node.left);
+                // Zastąp klucz korzenia kluczem następnikia
+                node.key = precestor(node.left);
                 // Usuń następnik
                 node.left = deleteRecursive(node.left, node.key);
             }
@@ -161,7 +162,7 @@ public class AVL {
         return node;
     }
 
-    private int ancestor(Node node) {
+    private int precestor(Node node) { // znajdź następnik ( w tym przypadku poprzednik )
         Node temp = node;
         // Przechodź w prawo aż do końca
         while (temp.right != null) {

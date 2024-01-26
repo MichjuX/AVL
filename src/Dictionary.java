@@ -26,10 +26,10 @@ public class Dictionary {
 //        this.avlPlate.root = this.avlPlate.insert(avlPlate.root, key);
 //    }
     void printPesel(){
-        this.avlPesel.PrintKLP(this.avlPesel.root);
+        this.avlPesel.printKLP(this.avlPesel.root);
 
     }
     void printPlate(){
-        this.avlPlate.PrintKLP(this.avlPlate.root);
+        this.avlPlate.printKLP(this.avlPlate.root);
     }
 }
