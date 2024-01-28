@@ -1,6 +1,6 @@
 public class Node {
     int key;
-    int level;
+    int weight;
     Node left;
     Node right;
 

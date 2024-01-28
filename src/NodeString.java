@@ -1,6 +1,6 @@
 public class NodeString {
     String key;
-    int level;
+    int weight;
     NodeString left;
     NodeString right;
 

@@ -23,7 +23,7 @@ public class AVLString {
         root = deleteRecursive(root, key, avl);
     }
 
-    public void printKLP(NodeString node) {
+    public void printKLP(NodeString node) { // Dla Pani, żeby było łatwiej sprawdzać :D
         if (node != null) {
             String fullKey = node.key;
             String highlightedPart = fullKey.substring(fullKey.length() - 3); // Ostatnie 3 znaki
@@ -63,23 +63,21 @@ public class AVLString {
 
     private NodeString rebalance(NodeString node) {
         // Aktualizuj poziom węzła
-        updateLevel(node);
-        // Oblicz balans węzła
-        int weight = calculateWeight(node);
+        updateWeight(node);
 
         // Jeżeli waga jest większa niż 1, znaczy to, że lewe poddrzewo jest zbyt wysokie
-        if (weight > 1) {
+        if (node.weight > 1) {
             // Jeżeli waga jest innego znaku, wykonaj rotację w lewo (będzie podwójna LR)
-            if (calculateWeight(node.left) < 0) {
+            if (node.left.weight < 0) {
                 node.left = LL(node.left);
             }
             // Wykonaj rotację w prawo dla węzła
             return RR(node);
         }
         // Jeżeli waga jest mniejsza niż -1, znaczy to, że prawe poddrzewo jest zbyt wysokie
-        if (weight < -1) {
+        if (node.weight < -1) {
             // Jeżeli waga jest innego znaku, wykonaj rotację w prawo (będzie podwójna RL)
-            if (calculateWeight(node.right) > 0) {
+            if (node.right.weight > 0) {
                 node.right = RR(node.right);
             }
             // Wykonaj rotację w lewo dla węzła
@@ -89,37 +87,31 @@ public class AVLString {
         return node;
     }
 
-    private int calculateWeight(NodeString node) {
-        if (node == null) {
-            return 0;
-        }
-        else { // Wysokość lewego poddrzewa minus wysokość prawego poddrzewa (wzór z wykładu)
-            return getNodeLevel(node.left) - getNodeLevel(node.right);
-        }
+    private void updateWeight(NodeString node) {
+        // Waga to wysokość lewego poddrzewa minus wysokość prawego poddrzewa (wzór z wykładu)
+        node.weight = getNodeHeight(node.left) - getNodeHeight(node.right);
     }
 
-    private void updateLevel(NodeString node) {
-        node.level = Math.max(getNodeLevel(node.left), getNodeLevel(node.right)) + 1;
+    private void updateWeight(NodeString A, NodeString B) {
+        // Waga to wysokość lewego poddrzewa minus wysokość prawego poddrzewa (wzór z wykładu)
+        A.weight = getNodeHeight(A.left) - getNodeHeight(A.right);
+        B.weight = getNodeHeight(B.left) - getNodeHeight(B.right);
     }
-    private void updateLevel(NodeString A, NodeString B) {
-        A.level = Math.max(getNodeLevel(A.left), getNodeLevel(A.right)) + 1;
-        B.level = Math.max(getNodeLevel(B.left), getNodeLevel(B.right)) + 1;
-    }
-
-    private int getNodeLevel(NodeString node) {
+    private int getNodeHeight(NodeString node) {
+        // Function to get the height of a node
         if (node != null) {
-            return node.level;
+            return Math.max(getNodeHeight(node.left), getNodeHeight(node.right)) + 1;
         }
-
-        return -1;
+        else return -1;
     }
+
     private NodeString LL(NodeString A) {
         // Wykonaj rotację w lewo
         NodeString B = A.right;
         A.right = B.left;
         B.left = A;
-        // Aktualizuj poziomy węzłów
-        updateLevel(A,B);
+        // Aktualizuj wagi węzłów
+        updateWeight(A,B);
         return B;
     }
 
@@ -128,8 +120,8 @@ public class AVLString {
         NodeString B = A.left;
         A.left = B.right;
         B.right = A;
-        // Aktualizuj poziomy węzłów
-        updateLevel(A,B);
+        // Aktualizuj wagi węzłów
+        updateWeight(A,B);
         return B;
     }
 
