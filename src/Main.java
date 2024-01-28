@@ -1,7 +1,6 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
-import java.sql.SQLOutput;
 import java.util.Scanner;
 
 public class Main {
@@ -10,7 +9,7 @@ public class Main {
     public static final int DATA = 0; // Applies only to AVL
     // 0 - read from file
     // 1 - generate random numbers
-    public static final String PROGRAM = "b";
+    public static final String PROGRAM = "a";
     // A - AVL
     // B - DICTIONARY
 
@@ -107,7 +106,7 @@ public class Main {
                         avl.PrintKLP(avl.root);
                         System.out.println();
                         System.out.print(ANSI_YELLOW+"Podaj element: "+ANSI_RESET);
-                        avl.getWeightHeight(avl.root, sc2.nextInt(), 0);
+                        avl.getWeightAndLevel(avl.root, sc2.nextInt(), 0);
                         break;
                     case "3":
                         // Dodaj element do drzewa AVL.

@@ -3,20 +3,20 @@ import java.io.PrintWriter;
 public class AVL {
     Node root;
 
-    public Node insert(Node root, int key) {
+    public Node insert(Node node, int key) {
         // Jeżeli węzeł jest pusty, zwróć nowy węzeł
-        if (root == null) {
+        if (node == null) {
             return new Node(key);
         }
         // Jeżeli klucz do wstawienia jest mniejszy niż klucz w bieżącym węźle, idź w lewo
-        if (key < root.key) {
-            root.left = insert(root.left, key);
+        if (key < node.key) {
+            node.left = insert(node.left, key);
         }
         // Jeżeli klucz do wstawienia jest większy niż klucz w bieżącym węźle, idź w prawo
-        if (key > root.key) {
-            root.right = insert(root.right, key);
+        if (key > node.key) {
+            node.right = insert(node.right, key);
         }
-        return rebalance(root);
+        return rebalance(node);
     }
 
     public void delete(int key) {
@@ -39,7 +39,7 @@ public class AVL {
         }
     }
 
-    public void getWeightHeight(Node node, int key, int height) {
+    public void getWeightAndLevel(Node node, int key, int height) { // wypisanie wagi i poziomu węzła o podanym kluczu
         if (node == null || node.key == key) {
             if(node==null){
                 System.out.println(Main.ANSI_RED + "Not found"  + Main.ANSI_RESET);
@@ -49,16 +49,16 @@ public class AVL {
             }
         }
         else if (node.key > key) {
-            getWeightHeight(node.left, key, height+1);
+            getWeightAndLevel(node.left, key, height+1);
         }
         else {
-            getWeightHeight(node.right, key, height+1);
+            getWeightAndLevel(node.right, key, height+1);
         }
     }
 
     private Node rebalance(Node node) {
-        // Aktualizuj wysokość węzła
-        updateNodeHeight(node);
+        // Aktualizuj poziom węzła
+        updateLevel(node);
         // Oblicz wage węzła
         int weight = calculateWeight(node);
 
@@ -80,7 +80,6 @@ public class AVL {
             // Wykonaj rotację w lewo
             return LL(node);
         }
-
         // Jeśli waga jest ok
         return node;
     }
@@ -90,18 +89,23 @@ public class AVL {
             return 0;
         }
         else { // Wysokość lewego poddrzewa minus wysokość prawego poddrzewa (wzór z wykładu)
-            return getNodeHeight(node.left) - getNodeHeight(node.right);
+            return getNodeLevel(node.left) - getNodeLevel(node.right);
         }
     }
 
-    private void updateNodeHeight(Node node) {
+    private void updateLevel(Node node) {
         // Wysokość węzła to maksimum wysokości lewego i prawego poddrzewa + 1 (wzór z wykładu)
-        node.height = Math.max(getNodeHeight(node.left), getNodeHeight(node.right)) + 1;
+        node.level = Math.max(getNodeLevel(node.left), getNodeLevel(node.right)) + 1;
+    }
+    private void updateLevel(Node A, Node B) {
+        // Wysokość węzła to maksimum wysokości lewego i prawego poddrzewa + 1 (wzór z wykładu)
+        A.level = Math.max(getNodeLevel(A.left), getNodeLevel(A.right)) + 1;
+        B.level = Math.max(getNodeLevel(B.left), getNodeLevel(B.right)) + 1;
     }
 
-    private int getNodeHeight(Node node) { // Funkcja, która zapobiega błędom związanym odwołaniem do wysokości pustego węzła
+    private int getNodeLevel(Node node) { // Funkcja, która zapobiega błędom związanym odwołaniem do poziomu pustego węzła
         if (node != null) {
-            return node.height;
+            return node.level;
         }
         return -1;
     }
@@ -111,9 +115,8 @@ public class AVL {
         Node B = A.right;
         A.right = B.left;
         B.left = A;
-        // Aktualizuj wysokości węzłów
-        updateNodeHeight(A);
-        updateNodeHeight(B);
+        // Aktualizuj poziomy węzłów
+        updateLevel(A,B);
         return B;
     }
 
@@ -122,22 +125,13 @@ public class AVL {
         Node B = A.left;
         A.left = B.right;
         B.right = A;
-        // Aktualizuj wysokości węzłów
-        updateNodeHeight(A);
-        updateNodeHeight(B);
+        // Aktualizuj poziomy węzłów
+        updateLevel(A,B);
         return B;
     }
 
     private Node deleteRecursive(Node node, int key) {
         // Szukamy elementu do usunięcia:
-        // Jeżeli klucz do usunięcia jest mniejszy niż klucz w bieżącym węźle, idź w lewo
-        if (key < node.key) {
-            node.left = deleteRecursive(node.left, key);
-        }
-        // Jeżeli klucz do usunięcia jest większy niż klucz w bieżącym węźle, idź w prawo
-        if (key > node.key) {
-            node.right = deleteRecursive(node.right, key);
-        }
         // Jeżeli klucz do usunięcia jest równy kluczowi w bieżącym węźle
         if (key == node.key) {
             if (node.right != null && node.left != null) { // Jeśli ma 2 potomków znajdź następnika
@@ -152,6 +146,16 @@ public class AVL {
                 } else {
                     node = node.right;
                 }
+            }
+        }
+        else {
+            // Jeżeli klucz do usunięcia jest mniejszy niż klucz w bieżącym węźle, idź w lewo
+            if (key < node.key) {
+                node.left = deleteRecursive(node.left, key);
+            }
+            // Jeżeli klucz do usunięcia jest większy niż klucz w bieżącym węźle, idź w prawo
+            if (key > node.key) {
+                node.right = deleteRecursive(node.right, key);
             }
         }
         // Zrób rotacje jeśli jest co rotować

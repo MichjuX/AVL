@@ -25,11 +25,11 @@ public class Dictionary {
 //    void insertPlate(String key){
 //        this.avlPlate.root = this.avlPlate.insert(avlPlate.root, key);
 //    }
-    void printPesel(){
-        this.avlPesel.printKLP(this.avlPesel.root);
-
-    }
-    void printPlate(){
-        this.avlPlate.printKLP(this.avlPlate.root);
-    }
+//    void printPesel(){
+//        this.avlPesel.printKLP(this.avlPesel.root);
+//
+//    }
+//    void printPlate(){
+//        this.avlPlate.printKLP(this.avlPlate.root);
+//    }
 }

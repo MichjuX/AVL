@@ -3,20 +3,20 @@ import java.io.PrintWriter;
 public class AVLString {
     NodeString root;
 
-    public NodeString insert(NodeString root, NodeString node) {
+    public NodeString insert(NodeString node, NodeString toInsert) {
         // Jeżeli węzeł jest pusty, zwróć nowy węzeł
-        if (root == null) {
-            return node;
+        if (node == null) {
+            return toInsert;
         }
         // Jeżeli klucz do wstawienia jest mniejszy niż klucz w bieżącym węźle, idź w lewo
-        else if (node.key.compareTo(root.key) < 0) {
-            root.left = insert(root.left, node);
+        else if (toInsert.key.compareTo(node.key) < 0) {
+            node.left = insert(node.left, toInsert);
         }
         // Jeżeli klucz do wstawienia jest większy niż klucz w bieżącym węźle, idź w prawo
-        else if (node.key.compareTo(root.key) > 0) {
-            root.right = insert(root.right, node);
+        else if (toInsert.key.compareTo(node.key) > 0) {
+            node.right = insert(node.right, toInsert);
         }
-        return rebalance(root);
+        return rebalance(node);
     }
 
     public void delete(String key, AVLString avl) {
@@ -62,8 +62,8 @@ public class AVLString {
     }
 
     private NodeString rebalance(NodeString node) {
-        // Aktualizuj wysokość węzła
-        updateNodeHeight(node);
+        // Aktualizuj poziom węzła
+        updateLevel(node);
         // Oblicz balans węzła
         int weight = calculateWeight(node);
 
@@ -94,17 +94,21 @@ public class AVLString {
             return 0;
         }
         else { // Wysokość lewego poddrzewa minus wysokość prawego poddrzewa (wzór z wykładu)
-            return getNodeHeight(node.left) - getNodeHeight(node.right);
+            return getNodeLevel(node.left) - getNodeLevel(node.right);
         }
     }
 
-    private void updateNodeHeight(NodeString node) {
-        node.height = Math.max(getNodeHeight(node.left), getNodeHeight(node.right)) + 1;
+    private void updateLevel(NodeString node) {
+        node.level = Math.max(getNodeLevel(node.left), getNodeLevel(node.right)) + 1;
+    }
+    private void updateLevel(NodeString A, NodeString B) {
+        A.level = Math.max(getNodeLevel(A.left), getNodeLevel(A.right)) + 1;
+        B.level = Math.max(getNodeLevel(B.left), getNodeLevel(B.right)) + 1;
     }
 
-    private int getNodeHeight(NodeString node) {
+    private int getNodeLevel(NodeString node) {
         if (node != null) {
-            return node.height;
+            return node.level;
         }
 
         return -1;
@@ -114,9 +118,8 @@ public class AVLString {
         NodeString B = A.right;
         A.right = B.left;
         B.left = A;
-        // Aktualizuj wysokości węzłów
-        updateNodeHeight(A);
-        updateNodeHeight(B);
+        // Aktualizuj poziomy węzłów
+        updateLevel(A,B);
         return B;
     }
 
@@ -125,22 +128,13 @@ public class AVLString {
         NodeString B = A.left;
         A.left = B.right;
         B.right = A;
-        // Aktualizuj wysokości węzłów
-        updateNodeHeight(A);
-        updateNodeHeight(B);
+        // Aktualizuj poziomy węzłów
+        updateLevel(A,B);
         return B;
     }
 
     private NodeString deleteRecursive(NodeString node, String key, AVLString avl) {
         // Szukamy elementu do usunięcia:
-        // Jeżeli klucz do usunięcia jest mniejszy niż klucz w bieżącym węźle, idź w lewo
-        if (key.compareTo(node.key) < 0) {
-            node.left = deleteRecursive(node.left, key, avl);
-        }
-        // Jeżeli klucz do usunięcia jest większy niż klucz w bieżącym węźle, idź w prawo
-        if (key.compareTo(node.key) > 0) {
-            node.right = deleteRecursive(node.right, key, avl);
-        }
         // Jeżeli klucz do usunięcia jest równy kluczowi w bieżącym węźle
         if (key.equals(node.key)){
             // Usuń z drugiego drzewa
@@ -159,6 +153,16 @@ public class AVLString {
                 } else {
                     node = node.right;
                 }
+            }
+        }
+        else {
+            // Jeżeli klucz do usunięcia jest mniejszy niż klucz w bieżącym węźle, idź w lewo
+            if (key.compareTo(node.key) < 0) {
+                node.left = deleteRecursive(node.left, key, avl);
+            }
+            // Jeżeli klucz do usunięcia jest większy niż klucz w bieżącym węźle, idź w prawo
+            if (key.compareTo(node.key) > 0) {
+                node.right = deleteRecursive(node.right, key, avl);
             }
         }
         // rebalance
